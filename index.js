@@ -4,7 +4,6 @@
 // init project
 var express = require('express');
 var app = express();
-
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
 var cors = require('cors');
@@ -24,7 +23,38 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+app.get('/api/:date',(req,res) => {
 
+  //Handling data parameters with invalid format
+
+  if(!Date.parse(req.params.date) && !Number(req.params.date))
+  {
+    return res.send({error: "Invalid Date"});
+  }
+
+
+  //Checking for conditions when date parameter is given in microseconds.
+
+  else if(!(/[-]/.test(req.params.date)) && Number(req.params.date))
+  {
+    let date = new Date(Number(req.params.date));
+
+    return res.send({
+      unix: date.getTime(),
+      utc: date.toUTCString()
+    });
+  } 
+
+  //For handling regular test cases when date parameter is in a valid date format.
+  let date = new Date(req.params.date);
+
+  let result = {
+    unix: date.getTime(),
+    utc: date.toUTCString()
+  }
+
+  res.status(200).send(result);
+});
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
