@@ -48,11 +48,11 @@ app.get("/api/hello", function (req, res) {
 // });
 
 app.get('/api/whoami', (req, res) => {
-
-  var ip_add = req.ip;
-  var lan = req.headers['accept-language'];
-  var os = req.headers['user-agent'];
-  res.send({ip: ip_add, language: lan, software: os});
+  const ip = req.ip;
+  // console.log(JSON.stringify(req.headers));
+  const language = req.headers['accept-language'];
+  const software = req.headers['user-agent'];
+  res.send({ip: ip, language: language, software: software});;
 });
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
